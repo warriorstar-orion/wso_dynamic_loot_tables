@@ -1,0 +1,443 @@
+--[[
+
+- Created by tdef
+- Updated by Tronex
+- Randomized world items on new game
+- Released blacklisted objects on new game
+- Created: 2018/10/27
+
+- 2019/31/3 script now read from config to set up
+- 2019/4/25 objects to release are now handled by another config
+- 2019/5/20 improved the way suffled consumables uses are set
+
+used ini:
+	items\settings\dynamic_item_spawn.ltx
+	plugins\new_game_setup.ltx
+
+set enable_debug to true, for debugging and map markers
+
+--]]
+
+local ini_dyn
+
+local enable_debug = false -- enable logging for debugging
+local debug_spawn_all = false -- spawn something in every possible destination at game-start
+local inited = false
+local sfind = string.find
+
+-- Table that holds the current configuration, loot tables, destinations, and
+-- status of all loaded spawns.
+local dyn_loot = {
+	config = {}, -- miscellanous configuration (usage templates etc)
+	itm_on = {}, -- [object id] = destination name
+	itm_num = {}, -- [destination name] = number of uses/ammo rounds/degradeable condition
+	itm_info = {}, -- [destination name] = {destination spawn data table}
+	itm_off = {}, -- [destination name] = true if spawn location is available, nil otherwise
+	limited_uses = {}, -- [object name] = [minimum, maximum use spawn value]
+	tables = {}, -- [loot table name] = {loot table weights keyed by object/loot table name}
+}
+
+-- Used to determine the visual appearance of spawn markers when enable_debug is true
+function get_itm_type(name)
+	if
+		sfind(name, "kolbasa")
+		or sfind(name, "conserva")
+		or sfind(name, "bread")
+		or sfind(name, "comestibles")
+		or sfind(name, "food")
+	then
+		return "item_food"
+	end
+
+	if
+		sfind(name, "energy")
+		or sfind(name, "vodka")
+		or sfind(name, "drink")
+		or sfind(name, "water")
+		or sfind(name, "alcohol")
+	then
+		return "item_drink"
+	end
+
+	if
+		sfind(name, "drug")
+		or sfind(name, "antirad")
+		or sfind(name, "bandage")
+		or sfind(name, "medkit")
+		or sfind(name, "medical")
+	then
+		return "item_medical"
+	end
+
+	if sfind(name, "ammo") then
+		return "item_ammo"
+	end
+
+	return "item_misc"
+end
+
+function print_debug(...)
+	if enable_debug then
+		printf(...)
+	end
+end
+
+function add_marker(name, section, id, typ)
+	if enable_debug then
+		local spot = get_itm_type(typ)
+		level.map_add_object_spot_ser(id, spot, "Name: " .. name .. " \\nType: " .. typ .. " \\nSection: " .. section)
+	end
+end
+
+function remove_marker(id, typ)
+	if enable_debug then
+		local spot = get_itm_type(typ)
+		if level.map_has_object_spot(id, spot) ~= 0 then
+			level.map_remove_object_spot(id, spot)
+		end
+	end
+end
+
+function init_settings()
+	print_debug("game_setup.init_settings: inited={%s}", inited)
+	if inited then
+		return
+	end
+	inited = true
+
+	dynamic_loot.load_destinations(dyn_loot, "items\\settings\\dynamic_loot_dests.ltx")
+	dynamic_loot.load_tables(dyn_loot, "items\\settings\\dynamic_loot_tables.ltx")
+	ini_dyn = dynamic_loot.load_zcp_settings(dyn_loot, "items\\settings\\dynamic_item_spawn.ltx")
+end
+
+function try_spawn_world_item(excluded_lvl)
+	-- Get spawn place name, return if unavailable place has been found
+	local dest = dynamic_loot.try_find_dest(dyn_loot, excluded_lvl)
+	if not dest then
+		print_debug("! Game Setup | can't find available item place")
+		return
+	end
+
+	dynamic_loot.try_spawn(dyn_loot, dest)
+end
+
+function is_world_item(id)
+	if id and dyn_loot.itm_on[id] then
+		--print_debug("! Game Setup | is_world_item[%s]", id)
+		return true
+	end
+	--print_debug("/ Game Setup | is_world_item[%s]", id)
+	return false
+end
+
+-- TODO IN 1.6 OR WHENEVER WE CAN EDIT ALL.SPAWN
+-- remove these 2 objects because vetham is making new office for medic and they get in the way
+
+function bar_medic_remove_stuff()
+	if not alife_storage_manager.get_state().duty_medic_fix then
+		alife_storage_manager.get_state().duty_medic_fix = true
+		for i = 1, 65534 do
+			local se = alife():object(i)
+			if se and (se:name() == "bar_physic_object_mlr_0002" or se:name() == "bar_physic_object_mlr_0003") then
+				alife():release(se)
+			end
+		end
+	end
+end
+
+-- TODO IN 1.6 OR WHENEVER WE CAN EDIT ALL.SPAWN
+-- remove these 4 objects because they're stuck in the train and physics impulse makes them jitter around at 5 fps
+
+function darkscape_remove_physics_objects()
+	if not alife_storage_manager.get_state().darkscape_phys_fix then
+		alife_storage_manager.get_state().darkscape_phys_fix = true
+		for i = 1, 65534 do
+			local se = alife():object(i)
+			if
+				se
+				and (
+					se:name() == "ds_physic_destroyable_object_0046"
+					or se:name() == "ds_physic_object_0009"
+					or se:name() == "ds_physic_object_0010"
+					or se:name() == "ds_physic_object_0002"
+				)
+			then
+				alife():release(se)
+			end
+		end
+	end
+end
+
+-- TODO IN 1.6 OR WHENEVER WE CAN EDIT ALL.SPAWN
+-- delete the chair and move smart cover in this new position
+-- OR
+-- make the chair part of level geometry and delete the object
+-- OR
+-- find a way to make that specific object not react to physics
+
+function freedom_medic_fix()
+	if not alife_storage_manager.get_state().freedom_medic_fix then
+		alife_storage_manager.get_state().freedom_medic_fix = true
+		for i = 1, 65534 do
+			local se = alife():object(i)
+			if se then
+				if se:name() == "mil_physic_object_0048" then
+					alife():release(se)
+				elseif se:name() == "sc_freedom_medic_mlr" then
+					alife():teleport_object(
+						i,
+						2165,
+						315401,
+						vector():set(27.681089401245, -6.9381303787231, 17.38550567627)
+					)
+				end
+			end
+		end
+	end
+end
+
+-------------------------------
+-- 			CALLBACKS
+-------------------------------
+local function actor_on_first_update()
+	init_settings()
+
+	freedom_medic_fix()
+
+	bar_medic_remove_stuff()
+
+	darkscape_remove_physics_objects()
+
+	if alife_storage_manager.get_state().item_removal_done or IsTestMode() then
+		UnregisterScriptCallback("actor_on_first_update", actor_on_first_update)
+		return
+	end
+
+	alife_storage_manager.get_state().item_removal_done = true
+	print_debug("- Game Setup | create dynamic items")
+
+	local ini_setup = ini_file("plugins\\new_game_setup.ltx")
+	local enabled = true --ini_dyn:r_bool_ex("settings","enabled") or false
+
+	if not enabled then
+		return
+	end
+
+	-- Release static items and mines
+	local sim = alife()
+	local boxes = {}
+	for i = 1, 65534 do
+		local se_obj = sim:object(i)
+		if se_obj then
+			local name = se_obj:name()
+			local cls = se_obj:clsid()
+
+			if cls == clsid.inventory_box_s then
+				--print_debug('%s_%s is a box', i, name)
+				boxes[i] = true
+			elseif ini_dyn:line_exist("replace_items", name) then
+				--print_debug('releasing %s', name)
+				--sim:release(se_obj, true)
+				alife_release(se_obj)
+			end
+
+			if ini_setup:line_exist("remove_objects", name) then
+				print_debug("/ Game Setup | Releasing object (%s)", name)
+
+				-- Clear inventory boxes from their manager
+				if cls == clsid.inventory_box_s then
+					treasure_manager.release_stash_by_id(se_obj.id)
+				end
+
+				safe_release_manager.release(se_obj)
+			end
+		end
+	end
+
+	-- Clear stashes
+	for i = 1, 65534 do
+		local se_obj = sim:object(i)
+		if se_obj then
+			local name = se_obj:name()
+			if boxes[se_obj.parent_id] and (not sfind(name, "mlr_strelok_item")) then
+				print_debug("/ Game Setup | Releasing {%s} from box", name)
+				--sim:release(se_obj, true)
+				alife_release(se_obj)
+			end
+		end
+	end
+
+	-- Setup items
+	local multi = game_difficulties.get_eco_factor("random_items") or 0.5
+	-- ZCP
+	if smr_amain_mcm.get_config("smr_enabled") then
+		multi = smr_loot_mcm.get_config("random_items")
+	end
+	-- ZCP END
+	multi = (multi < 1) and multi or 1
+
+	local num = math.ceil(size_table(dyn_loot.itm_off) * multi)
+
+	if debug_spawn_all then
+		num = size_table(dyn_loot.itm_off)
+	end
+
+	for i = 1, num do
+		try_spawn_world_item()
+	end
+
+	print_debug(
+		"- Game Setup | dyn_loot.itm_info: %s - dyn_loot.itm_on: %s - dyn_loot.itm_off: %s",
+		size_table(dyn_loot.itm_info),
+		size_table(dyn_loot.itm_on),
+		size_table(dyn_loot.itm_off)
+	)
+end
+
+local tg_stkr = 0
+local function actor_on_update()
+	if time_global() < tg_stkr then
+		return
+	end
+
+	-- No need to process if actor is outside cordon / visited more levels / not a loner / Warfare is active
+	if
+		(level.name() ~= "l01_escape")
+		or IsWarfare()
+		or (game_statistics.get_statistic_count("level_changes") > 1)
+		or (get_actor_true_community() ~= "stalker")
+	then
+		UnregisterScriptCallback("actor_on_update", actor_on_update)
+		return
+	end
+
+	-- Remove common military or mutant squads
+	local on_act_lvl = simulation_objects.is_on_the_actor_level
+	for id, v in pairs(SIMBOARD.squads) do
+		local squad = alife_object(id)
+		if squad and squad.common and (squad.player_id == "army") and on_act_lvl(squad) then
+			squad:remove_squad()
+			break
+		end
+	end
+
+	tg_stkr = time_global() + 10000
+end
+
+local function actor_on_item_take(obj)
+	local id = obj:id()
+
+	if dyn_loot == nil then
+		return
+	end
+
+	if dyn_loot.itm_on[id] then
+		local name = dyn_loot.itm_on[id]
+		local section = obj:section()
+
+		local info = dyn_loot.itm_info[name]
+		if not info then
+			print_debug("! Game Setup | can't get info for {%s}", name)
+		end
+
+		-- Spawn a new world item in a level that isn't this one
+		local lvl_short = txr_routes.get_map(level.name())
+		try_spawn_world_item(lvl_short)
+
+		-- Switch state
+		dyn_loot.itm_on[id] = nil
+		dyn_loot.itm_off[name] = true
+
+		-- Read info
+		local num = dyn_loot.itm_num[name]
+		if num then
+			-- Ammo
+			if IsItem("ammo", section) then
+				obj:ammo_set_count(num)
+				print_debug(
+					"- Game Setup | taken world ammo [%s](%s) is set to %s ammo - info name: %s",
+					section,
+					id,
+					num,
+					name
+				)
+				dyn_loot.itm_num[name] = nil
+
+			-- Multi-use
+			elseif dyn_loot.limited_uses[section] then
+				alife_process_item(section, id, { uses = num })
+				print_debug(
+					"- Game Setup | taken world consumable [%s](%s) is set to %s uses - info name: %s",
+					section,
+					id,
+					num,
+					name
+				)
+				dyn_loot.itm_num[name] = nil
+
+			-- Condition
+			elseif utils_item.is_degradable(nil, section) then
+				alife_process_item(section, id, { cond = num })
+				print_debug(
+					"- Game Setup | taken world degraded item [%s](%s) is set to %s condition - info name: %s",
+					section,
+					id,
+					num,
+					name
+				)
+				dyn_loot.itm_num[name] = nil
+			end
+
+		-- Normal
+		else
+			print_debug("- Game Setup | taken world item [%s](%s) - info name: %s", section, id, uses, name)
+		end
+
+		-- Send message
+		itms_manager.send_itm_msg(section)
+
+		if info then
+			remove_marker(id, info.typ)
+		end
+	end
+
+	-- Ammo aggregation (it's important to start ammo aggregation after sorting taken world ammo size first, to prevent issues)
+	if IsAmmo(obj) then
+		item_weapon.ammo_aggregation(obj)
+	end
+end
+
+local function save_state(m_data)
+	if dyn_loot ~= nil then
+		m_data.dyn_loot = {
+			itm_on = dyn_loot.itm_on,
+			itm_num = dyn_loot.itm_num,
+		}
+		print_debug(
+			"# SAVING: dyn_loot.itm_on [%s] - dyn_loot.itm_num [%s]",
+			size_table(m_data.dyn_loot.itm_on),
+			size_table(m_data.dyn_loot.itm_num)
+		)
+	end
+end
+
+local function load_state(m_data)
+	if m_data.dyn_loot ~= nil then
+		dyn_loot.itm_on = m_data.dyn_loot.itm_on
+		dyn_loot.itm_num = m_data.dyn_loot.itm_num
+
+		print_debug(
+			"# LOADING: dyn_loot.itm_on [%s] - dyn_loot.itm_num [%s]",
+			size_table(dyn_loot.itm_on),
+			size_table(dyn_loot.itm_num)
+		)
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update", actor_on_first_update)
+	RegisterScriptCallback("actor_on_update", actor_on_update)
+	RegisterScriptCallback("actor_on_item_take", actor_on_item_take)
+	RegisterScriptCallback("save_state", save_state)
+	RegisterScriptCallback("load_state", load_state)
+end
