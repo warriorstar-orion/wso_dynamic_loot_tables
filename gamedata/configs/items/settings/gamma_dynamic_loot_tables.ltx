@@ -54,11 +54,13 @@ chocolate = 1
 raisins = 1
 nuts = 1
 mint = 1
+corn = 1
+salmon = 1
+chili = 1
+meat_tushkano = 1
 
 [loot_table_food_tier2]
 beans = 1
-chili = 1
-corn = 1
 tomato = 1
 tushonka = 1
 protein = 1
@@ -71,8 +73,8 @@ ration_ru = 1
 ration_ukr = 1
 
 [loot_table_food]
-loot_table_food_tier1 = 25
-loot_table_food_tier2 = 10
+loot_table_food_tier1 = 35
+loot_table_food_tier2 = 15
 loot_table_food_tier3 = 1
 
 [loot_table_tobacco]
@@ -149,9 +151,9 @@ gun_oil_ru = 1
 gun_oil_ru_d = 1
 
 [loot_table_repair]
-loot_table_repair_tier1 = 20
-loot_table_repair_tier2 = 10
-loot_table_repair_tier3 = 5
+loot_table_repair_tier1 = 50
+loot_table_repair_tier2 = 20
+loot_table_repair_tier3 = 1
 
 ; MARK: Junk
 
@@ -160,34 +162,37 @@ radio2 = 3
 radio = 2
 
 [loot_table_junk_tier1]
-batteries_dead = 2
+batteries_dead = 1
 jar = 1
 e_syringe = 1
 prt_i_paper = 1
 prt_i_fasteners = 1
 prt_i_scrap = 1
 prt_i_plastic = 1
+; underwear = 1 ; -- 3d model is unusually big
+
+[loot_table_elec_parts]
+prt_i_copper = 10
+prt_i_capacitors = 5
+prt_i_resistors = 5
+prt_i_transistors = 1
 
 [loot_table_junk_tier2]
-prt_i_copper = 2
-flashlight_broken = 2
-gloves = 2
+flashlight_broken = 3
+boots = 2
 loot_table_glowstick = 1
-boots = 1
+loot_table_elec_parts = 1
 ; shovel_mili = 1 ; -- shovels look goofy in world spawns
 ; shovel_old = 1
 welding_goggles = 1
 box_matches = 1
 
 [loot_table_junk_tier3]
-loot_table_broken_radio = 3
-headlamp = 3
-broken_detector = 3
-walkie = 3
-explo_balon_gas = 2
-prt_i_capacitors = 1
-prt_i_resistors = 1
-prt_i_transistors = 1
+loot_table_broken_radio = 2
+headlamp = 2
+broken_detector = 2
+walkie = 2
+explo_balon_gas = 1
 
 [loot_table_junk]
 loot_table_junk_tier1 = 20
@@ -195,8 +200,8 @@ loot_table_junk_tier2 = 10
 loot_table_junk_tier3 = 5
 
 [loot_table_valuables]
-hand_watch = 2
-cards = 2
+cards = 4
+hand_watch = 1
 jewelry_box = 1
 
 [loot_table_kit]
@@ -487,17 +492,16 @@ loot_table_water = 1
 ; these values now differ significantly from the default gamma "misc" loot
 ; category, in an attempt to reign in the sheer amount of armor parts and other
 ; large lists of items that dominated the original weights
-loot_table_junk = 65
-loot_table_ammo_parts = 25
-loot_table_repair = 25
-loot_table_weapon_parts = 20
-loot_table_armor_parts = 20
-loot_table_medical = 9
-loot_table_valuables = 8
-loot_table_alcohol = 7
+loot_table_junk = 50
+loot_table_repair = 35
+loot_table_ammo_parts = 15
+loot_table_weapon_parts = 15
+loot_table_armor_parts = 15
+loot_table_medical = 10
+loot_table_alcohol = 5
 loot_table_tobacco = 5
-loot_table_food = 2
-loot_table_water = 2
+loot_table_valuables = 3
+loot_table_food = 2 ; -- already lots of pre-existing food spawns
 
 [loot_table_ammo]
 loot_table_ammo_parts = 3
