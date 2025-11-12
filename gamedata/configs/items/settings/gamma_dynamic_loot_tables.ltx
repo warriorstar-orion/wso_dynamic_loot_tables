@@ -20,12 +20,18 @@
 ; TODO(wso): can add old ammo back not in without it scuffing up the loot distribution
 ; TODO(wso): move condition/uses ranges into config
 
-; MARK: Item Tables
+; MARK: Drinks
 
 [loot_table_water]
 flask = 9
 water_drink = 9
 mineral_water = 2
+
+[loot_table_special_drinks]
+coffee_drink = 10
+energy_drink = 10
+ground_coffee = 5
+tea = 1
 
 [loot_table_alcohol]
 beer = 5
@@ -40,79 +46,153 @@ device_glowstick_blue = 1
 device_glowstick_orange = 1
 device_glowstick_red = 1
 
-[loot_table_preserved_food]
+; MARK: Food
+
+[loot_table_food_tier1]
+chocolate_p = 1
+chocolate = 1
+raisins = 1
+nuts = 1
+mint = 1
+
+[loot_table_food_tier2]
 beans = 1
 chili = 1
 corn = 1
 tomato = 1
 tushonka = 1
-nuts = 1
 protein = 1
 kolbasa = 1
 sausage = 1
-chocolate_p = 1
+
+[loot_table_food_tier3]
+mre = 1
+ration_ru = 1
+ration_ukr = 1
+
+[loot_table_food]
+loot_table_food_tier1 = 25
+loot_table_food_tier2 = 10
+loot_table_food_tier3 = 1
 
 [loot_table_tobacco]
-cigar1 = 1
-cigar2 = 1
-cigar3 = 1
-cigarettes_russian = 1
+cigar1 = 10
+cigar2 = 10
+cigar3 = 10
+cigarettes = 10
+cigarettes_lucky = 10
+cigarettes_russian = 10
+tobacco = 5
+cigar = 1
+
+; MARK: Medical
+
+[loot_table_medical_tier1]
+bandage = 4
+drug_coagulant = 3 ; -- vinca
+yadylin = 3
+antibio_chlor = 1 ; -- chlortetracycline
+glucose_s = 1 ; -- not in gamma table, may need adjusting
+
+[loot_table_medical_tier2]
+jgut = 2 ; -- tourniquet
+medkit = 2 ; -- AI-2
+akvatab = 2 ; -- ibuprofen
+drug_antidot = 1 ; -- "antidote"
+drug_radioprotector = 1 ; -- radioprotectant
+joint = 1 ; -- not in gamma table, may need adjusting
+glucose = 1 ; -- not in gamma table, may need adjusting
+antirad_kalium = 1 ; -- potassium iodide
+
+[loot_table_medical_tier3]
+analgetic = 1 ; -- diclofenac sodium, not in gamma table, may need adjusting
+antiemetic = 1 ; -- etperazine
+drug_booster = 1 ; -- hercules
+drug_psy_blockade = 1 ; -- psyblock
+antirad_cystamine = 1 ; -- cystamine
+antibio_sulfad = 1 ; -- sulfadimethoxine
+caffeine = 1
+marijuana = 1 ; -- not in gamma table, may need adjusting
+antirad = 1 ; -- not in gamma table, may need adjusting
 
 [loot_table_medical]
-bandage = 4
-drug_coagulant = 3
-yadylin = 3
-antibio_chlor = 2
-jgut = 2
-medkit = 2
-akvatab = 2
-drug_antidot = 2
-drug_radioprotector = 2
-antiemetic = 1
-antirad_kalium = 1
-drug_booster = 1
-drug_psy_blockade = 1
-antirad_cystamine = 1
-antibio_sulfad = 1
-caffeine = 1
+loot_table_medical_tier1 = 8
+loot_table_medical_tier2 = 5
+loot_table_medical_tier3 = 2
 
-[loot_table_components]
-e_syringe = 5
-batteries_dead = 5
-prt_i_plastic = 5
-jar = 5
-leatherman_tool = 4
-grooming = 4
-ball_hammer = 4
-rope = 3
-box_matches = 3
-beadspread = 2
-duct_tape = 2
-swiss_knife = 2
-loot_table_glowstick = 1
-explo_balon_gas = 1
+; MARK: Repair-related
+
+[loot_table_repair_tier1]
+steel_wool = 3
+sewing_thread = 3
+grooming = 2
+ball_hammer = 2
+rope = 2
+synthrope = 2
+cutlery = 2
 tarpaulin = 2
 
+[loot_table_repair_tier2]
+duct_tape = 2
+swiss_knife = 2
+beadspread = 1
+sharpening_stones = 1
+rasp_tool = 1
+ramrod_tool = 1
+heavy_sewing_thread = 1
+
+[loot_table_repair_tier3]
+leatherman_tool = 1
+grease = 1
+gun_oil = 1
+gun_oil_ru = 1
+gun_oil_ru_d = 1
+
 [loot_table_repair]
-steel_wool = 5
-sewing_thread = 5
-grease = 4
-rasp_tool = 3
-ramrod_tool = 3
-heavy_sewing_thread = 3
+loot_table_repair_tier1 = 20
+loot_table_repair_tier2 = 10
+loot_table_repair_tier3 = 5
+
+; MARK: Junk
 
 [loot_table_broken_radio]
 radio2 = 3
 radio = 2
 
-[loot_table_junk]
-loot_table_broken_radio = 1
-headlamp = 1
-broken_detector = 1
-walkie = 1
+[loot_table_junk_tier1]
+batteries_dead = 2
+jar = 1
+e_syringe = 1
+prt_i_paper = 1
+prt_i_fasteners = 1
+prt_i_scrap = 1
+prt_i_plastic = 1
+
+[loot_table_junk_tier2]
+prt_i_copper = 2
+flashlight_broken = 2
+gloves = 2
+loot_table_glowstick = 1
 boots = 1
-flashlight_broken = 1
+; shovel_mili = 1 ; -- shovels look goofy in world spawns
+; shovel_old = 1
 welding_goggles = 1
+box_matches = 1
+
+[loot_table_junk_tier3]
+loot_table_broken_radio = 3
+headlamp = 3
+broken_detector = 3
+walkie = 3
+explo_balon_gas = 2
+prt_i_capacitors = 1
+prt_i_resistors = 1
+prt_i_transistors = 1
+
+[loot_table_junk]
+loot_table_junk_tier1 = 20
+loot_table_junk_tier2 = 10
+loot_table_junk_tier3 = 5
 
 [loot_table_valuables]
 hand_watch = 2
@@ -129,24 +209,21 @@ flask = 3
 itm_ammokit = 1
 itm_drugkit = 1
 
-[loot_table_armor_parts]
-prt_o_retardant_5 = 6
-prt_o_ballistic_19 = 6
-prt_o_ballistic_13 = 5
-prt_o_ballistic_20 = 5
-prt_o_ballistic_9 = 4
-prt_o_ballistic_15 = 4
-prt_o_ballistic_16 = 4
-prt_o_ballistic_18 = 4
-prt_o_ballistic_5 = 3
-prt_o_fabrics_1 = 3
-prt_o_fabrics_2 = 3
-prt_o_fabrics_3 = 3
-prt_o_fabrics_4 = 3
+; MARK: Armor Parts
+
+; These parts are split into tiers based on current trader price.
+; Quick and dirty, more organization is probably necessary.
+
+[loot_table_armor_parts_tier1]
+prt_o_fabrics_1 = 1
+prt_o_fabrics_2 = 1
+prt_o_fabrics_3 = 1
+prt_o_fabrics_4 = 1
 prt_o_retardant_1 = 1
 prt_o_retardant_2 = 1
 prt_o_retardant_3 = 1
 prt_o_retardant_4 = 1
+prt_o_retardant_5 = 1
 prt_o_retardant_6 = 1
 prt_o_retardant_7 = 1
 prt_o_retardant_8 = 1
@@ -162,54 +239,125 @@ prt_o_retardant_17 = 1
 prt_o_retardant_18 = 1
 prt_o_retardant_19 = 1
 prt_o_retardant_20 = 1
+
+[loot_table_armor_parts_tier2]
 prt_o_ballistic_1 = 1
 prt_o_ballistic_2 = 1
 prt_o_ballistic_3 = 1
 prt_o_ballistic_4 = 1
+prt_o_ballistic_5 = 1
 prt_o_ballistic_6 = 1
 prt_o_ballistic_7 = 1
 prt_o_ballistic_8 = 1
+prt_o_ballistic_9 = 1
 prt_o_ballistic_10 = 1
 prt_o_ballistic_11 = 1
 prt_o_ballistic_12 = 1
+prt_o_ballistic_13 = 1
 prt_o_ballistic_14 = 1
+prt_o_ballistic_15 = 1
+prt_o_ballistic_16 = 1
 prt_o_ballistic_17 = 1
+prt_o_ballistic_18 = 1
+prt_o_ballistic_19 = 1
+prt_o_ballistic_20 = 1
 
-[loot_table_weapon_parts]
+[loot_table_armor_parts]
+loot_table_armor_parts_tier1 = 2
+loot_table_armor_parts_tier2 = 1
+
+; MARK: Weapon Parts
+
+; These parts are split into tiers based on current trader price.
+; Quick and dirty, more organization is probably necessary.
+
+[loot_table_weapon_parts_tier1]
+prt_w_barrel_1 = 1
+prt_w_barrel_2 = 1
+prt_w_barrel_8 = 1
+prt_w_barrel_12 = 1
+prt_w_bolt_carrier_8 = 1
+prt_w_bolt_carrier_9 = 1
 prt_w_p_barrel_1 = 1
 prt_w_p_barrel_2 = 1
 prt_w_p_barrel_3 = 1
+prt_w_p_barrel_5 = 1
 prt_w_p_barrel_6 = 1
+prt_w_p_spring_1 = 1
+prt_w_p_spring_2 = 1
+prt_w_p_spring_3 = 1
+prt_w_p_spring_4 = 1
+prt_w_p_spring_5 = 1
+prt_w_p_trigger_1 = 1
+prt_w_p_trigger_2 = 1
+prt_w_p_trigger_3 = 1
+prt_w_trigger_components_6 = 1
+
+[loot_table_weapon_parts_tier2]
 prt_w_barrel_3 = 1
-prt_w_barrel_4 = 1
 prt_w_barrel_7 = 1
-prt_w_barrel_8 = 1
 prt_w_barrel_9 = 1
 prt_w_barrel_11 = 1
+prt_w_bolt_1 = 1
+prt_w_bolt_4 = 1
+prt_w_bolt_6 = 1
+prt_w_bolt_9 = 1
+prt_w_bolt_11 = 1
+prt_w_bolt_12 = 1
+prt_w_bolt_14 = 1
+prt_w_bolt_15 = 1
+prt_w_bolt_16 = 1
+prt_w_bolt_17 = 1
 prt_w_bolt_carrier_1 = 1
-prt_w_bolt_carrier_2 = 1
 prt_w_bolt_carrier_3 = 1
 prt_w_bolt_carrier_4 = 1
 prt_w_bolt_carrier_5 = 1
 prt_w_bolt_carrier_7 = 1
 prt_w_bolt_carrier_11 = 1
-prt_w_trigger_components_1 = 1
-prt_w_trigger_components_2 = 1
-prt_w_trigger_components_3 = 1
-prt_w_trigger_components_4 = 1
-prt_w_trigger_components_5 = 1
-prt_w_bolt_1 = 1
-prt_w_bolt_3 = 1
-prt_w_bolt_4 = 1
-prt_w_bolt_6 = 1
-prt_w_bolt_8 = 1
-prt_w_bolt_9 = 1
-prt_w_gas_tube_1 = 1
 prt_w_gas_tube_2 = 1
+prt_w_gas_tube_3 = 1
 prt_w_gas_tube_4 = 1
 prt_w_gas_tube_5 = 1
 prt_w_gas_tube_6 = 1
+prt_w_gas_tube_9 = 1
+prt_w_gas_tube_10 = 1
+prt_w_gas_tube_11 = 1
+prt_w_p_barrel_7 = 1
+prt_w_p_spring_6 = 1
+prt_w_p_trigger_4 = 1
+prt_w_trigger_components_1 = 1
+prt_w_trigger_components_2 = 1
+prt_w_trigger_components_4 = 1
+
+[loot_table_weapon_parts_tier3]
+prt_w_barrel_4 = 1
+prt_w_barrel_5 = 1
+prt_w_barrel_6 = 1
+prt_w_barrel_10 = 1
+prt_w_barrel_13 = 1
+prt_w_bolt_2 = 1
+prt_w_bolt_3 = 1
+prt_w_bolt_5 = 1
+prt_w_bolt_7 = 1
+prt_w_bolt_8 = 1
+prt_w_bolt_10 = 1
+prt_w_bolt_13 = 1
+prt_w_bolt_carrier_2 = 1
+prt_w_bolt_carrier_6 = 1
+prt_w_bolt_carrier_10 = 1
+prt_w_gas_tube_1 = 1
+prt_w_gas_tube_7 = 1
 prt_w_gas_tube_8 = 1
+prt_w_p_barrel_4 = 1
+prt_w_trigger_components_3 = 1
+prt_w_trigger_components_5 = 1
+
+[loot_table_weapon_parts]
+loot_table_weapon_parts_tier1 = 3
+loot_table_weapon_parts_tier2 = 2
+loot_table_weapon_parts_tier3 = 1
+
+; MARK: Ammo Parts
 
 [loot_table_ammo_parts]
 powder_1 = 3
@@ -279,12 +427,12 @@ ammo_9x21_sp10 = 3
 ammo_5.45x39_ep = 1
 
 [loot_table_ammo_wp_lvl4]
-; ammo_pkm_100 = ? ; not in original gamma table
+ammo_pkm_100 = 1 ; not in original gamma table, may need adjustment
 ammo_5.45x39_ap = 2
 7.62x54_7h14 = 1
 
 [loot_table_ammo_wp_lvl5]
-; ammo_12.7x55_ap = ? ; not in original gamma table
+ammo_12.7x55_ap = 1 ; not in original gamma table, may need adjustment
 ammo_23x75_barrikada = 1
 
 [loot_table_ammo_wp]
@@ -295,7 +443,7 @@ loot_table_ammo_wp_lvl4 = 2
 loot_table_ammo_wp_lvl5 = 1
 
 [loot_table_ammo_nato_lvl1]
-; ammo_5.7x28_ss195 = ? ; not in original gamma table
+ammo_5.7x28_ss195 = 1 ; not in original gamma table, may need adjustment
 ammo_9x19_ap = 1
 
 [loot_table_ammo_nato_lvl2]
@@ -303,17 +451,17 @@ ammo_5.56x45_fmj = 1
 ammo_5.7x28_ss190 = 1
 
 [loot_table_ammo_nato_lvl3]
-; ammo_7.62x51_fmj = ? ; not in original gamma table
+ammo_7.62x51_fmj = 1 ; not in original gamma table, may need adjustment
 ammo_5.56x45_ss190 = 1
 
 [loot_table_ammo_nato_lvl4]
-; ammo_12x76_bull = ? ; not in original gamma table
 ammo_5.56x45_ap = 2
+ammo_12x76_bull = 1 ; not in original gamma table, may need adjustment
 ammo_12x76_dart = 1
 
 [loot_table_ammo_nato_lvl5]
-; ammo_7.62x54_ap = ? ; not in original gamma table
 ammo_9x39_ap = 2
+ammo_7.62x54_ap = 1 ; not in original gamma table, may need adjustment
 
 [loot_table_ammo_nato]
 loot_table_ammo_nato_lvl1 = 5
@@ -330,25 +478,25 @@ loot_table_ammo_nato = 2
 ; MARK: Category Tables
 
 [loot_table_comestibles]
-loot_table_preserved_food = 10
-loot_table_alcohol = 2
+loot_table_food = 10
+loot_table_alcohol = 5
+loot_table_special_drinks = 1
 loot_table_water = 1
 
 [loot_table_generic]
-; this is a rough approximation of what the items in the old "misc" loot
-; category would be if you just added them up and bucketed them into the new
-; tables. but now you can tune these separately from their contents.
-loot_table_armor_parts = 85
-loot_table_components = 60
-loot_table_weapon_parts = 35
-loot_table_junk = 30
-loot_table_ammo_parts = 30
+; these values now differ significantly from the default gamma "misc" loot
+; category, in an attempt to reign in the sheer amount of armor parts and other
+; large lists of items that dominated the original weights
+loot_table_junk = 65
+loot_table_ammo_parts = 25
 loot_table_repair = 25
+loot_table_weapon_parts = 20
+loot_table_armor_parts = 20
 loot_table_medical = 9
 loot_table_valuables = 8
 loot_table_alcohol = 7
 loot_table_tobacco = 5
-loot_table_preserved_food = 2
+loot_table_food = 2
 loot_table_water = 2
 
 [loot_table_ammo]
