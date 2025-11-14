@@ -14,11 +14,10 @@
 ; create a cycle between multiple tables referring to each other. Be careful not
 ; to cause infinite loops.
 
-; TODO(wso): split weapon/armor parts into tiers
 ; TODO(wso): per-level tables? per-faction tables? per-faction base tables?
-; TODO(wso): add more stuff - scrap metal, other foods, etc?
 ; TODO(wso): can add old ammo back not in without it scuffing up the loot distribution
 ; TODO(wso): move condition/uses ranges into config
+; TODO(wso): add mags redux support since they won't dominate the loot table by sheer volume
 
 ; MARK: Drinks
 
@@ -39,12 +38,6 @@ bottle_metal = 4
 vodka = 2
 vodka2 = 2
 vodka_quality = 1
-
-[loot_table_glowstick]
-device_glowstick = 1
-device_glowstick_blue = 1
-device_glowstick_orange = 1
-device_glowstick_red = 1
 
 ; MARK: Food
 
@@ -73,8 +66,8 @@ ration_ru = 1
 ration_ukr = 1
 
 [loot_table_food]
-loot_table_food_tier1 = 35
-loot_table_food_tier2 = 15
+loot_table_food_tier1 = 40
+loot_table_food_tier2 = 10
 loot_table_food_tier3 = 1
 
 [loot_table_tobacco]
@@ -91,34 +84,34 @@ cigar = 1
 
 [loot_table_medical_tier1]
 bandage = 4
-drug_coagulant = 3 ; -- vinca
+drug_coagulant = 3 ; vinca
 yadylin = 3
-antibio_chlor = 1 ; -- chlortetracycline
-glucose_s = 1 ; -- not in gamma table, may need adjusting
+antibio_chlor = 1 ; chlortetracycline
+glucose_s = 1 ; not in gamma table, may need adjusting
 
 [loot_table_medical_tier2]
-jgut = 2 ; -- tourniquet
-medkit = 2 ; -- AI-2
-akvatab = 2 ; -- ibuprofen
-drug_antidot = 1 ; -- "antidote"
-drug_radioprotector = 1 ; -- radioprotectant
-joint = 1 ; -- not in gamma table, may need adjusting
-glucose = 1 ; -- not in gamma table, may need adjusting
-antirad_kalium = 1 ; -- potassium iodide
+jgut = 2 ; tourniquet
+medkit = 2 ; AI-2
+akvatab = 2 ; ibuprofen
+drug_antidot = 1 ; "antidote"
+drug_radioprotector = 1 ; radioprotectant
+joint = 1 ; not in gamma table, may need adjusting
+glucose = 1 ; not in gamma table, may need adjusting
+antirad_kalium = 1 ; potassium iodide
 
 [loot_table_medical_tier3]
-analgetic = 1 ; -- diclofenac sodium, not in gamma table, may need adjusting
-antiemetic = 1 ; -- etperazine
-drug_booster = 1 ; -- hercules
-drug_psy_blockade = 1 ; -- psyblock
-antirad_cystamine = 1 ; -- cystamine
-antibio_sulfad = 1 ; -- sulfadimethoxine
+analgetic = 1 ; diclofenac sodium, not in gamma table, may need adjusting
+antiemetic = 1 ; etperazine
+drug_booster = 1 ; hercules
+drug_psy_blockade = 1 ; psyblock
+antirad_cystamine = 1 ; cystamine
+antibio_sulfad = 1 ; sulfadimethoxine
 caffeine = 1
-marijuana = 1 ; -- not in gamma table, may need adjusting
-antirad = 1 ; -- not in gamma table, may need adjusting
+marijuana = 1 ; not in gamma table, may need adjusting
+antirad = 1 ; not in gamma table, may need adjusting
 
 [loot_table_medical]
-loot_table_medical_tier1 = 8
+loot_table_medical_tier1 = 15
 loot_table_medical_tier2 = 5
 loot_table_medical_tier3 = 2
 
@@ -130,20 +123,20 @@ sewing_thread = 3
 grooming = 2
 ball_hammer = 2
 rope = 2
-synthrope = 2
 cutlery = 2
 tarpaulin = 2
 
 [loot_table_repair_tier2]
 duct_tape = 2
 swiss_knife = 2
+synthrope = 1
 beadspread = 1
-sharpening_stones = 1
 rasp_tool = 1
 ramrod_tool = 1
 heavy_sewing_thread = 1
 
 [loot_table_repair_tier3]
+sharpening_stones = 1
 leatherman_tool = 1
 grease = 1
 gun_oil = 1
@@ -157,47 +150,58 @@ loot_table_repair_tier3 = 1
 
 ; MARK: Junk
 
-[loot_table_broken_radio]
-radio2 = 3
-radio = 2
-
-[loot_table_junk_tier1]
-batteries_dead = 1
-jar = 1
-e_syringe = 1
-prt_i_paper = 1
-prt_i_fasteners = 1
-prt_i_scrap = 1
-prt_i_plastic = 1
-; underwear = 1 ; -- 3d model is unusually big
-
 [loot_table_elec_parts]
 prt_i_copper = 10
 prt_i_capacitors = 5
 prt_i_resistors = 5
 prt_i_transistors = 1
 
+[loot_table_broken_radio]
+radio2 = 1
+radio = 1
+
+[loot_table_paper_products]
+prt_i_paper = 1
+porn = 1
+porn2 = 1
+
+[loot_table_glowstick]
+device_glowstick = 1
+device_glowstick_blue = 1
+device_glowstick_orange = 1
+device_glowstick_red = 1
+
+[loot_table_junk_tier1]
+loot_table_paper_products = 1
+loot_table_glowstick = 1
+batteries_dead = 1
+jar = 1
+e_syringe = 1
+prt_i_fasteners = 1
+prt_i_scrap = 1
+prt_i_plastic = 1
+; underwear = 1 ; seemingly mismatched 3d model
+
 [loot_table_junk_tier2]
 flashlight_broken = 3
 boots = 2
-loot_table_glowstick = 1
 loot_table_elec_parts = 1
-; shovel_mili = 1 ; -- shovels look goofy in world spawns
+; shovel_mili = 1 ; shovels look goofy in world spawns
 ; shovel_old = 1
 welding_goggles = 1
 box_matches = 1
 
 [loot_table_junk_tier3]
-loot_table_broken_radio = 2
-headlamp = 2
+loot_table_broken_radio = 5
+headlamp = 5
 broken_detector = 2
 walkie = 2
 explo_balon_gas = 1
 
 [loot_table_junk]
-loot_table_junk_tier1 = 20
-loot_table_junk_tier2 = 10
-loot_table_junk_tier3 = 5
+loot_table_junk_tier1 = 25
+loot_table_junk_tier2 = 20
+loot_table_junk_tier3 = 1
 
 [loot_table_valuables]
 cards = 4
@@ -217,18 +221,19 @@ itm_drugkit = 1
 ; MARK: Armor Parts
 
 ; These parts are split into tiers based on current trader price.
-; Quick and dirty, more organization is probably necessary.
+; and lightly weighted based on their original gamma weights in the
+; misc category. Quick and dirty, more organization is probably necessary.
 
 [loot_table_armor_parts_tier1]
-prt_o_fabrics_1 = 1
-prt_o_fabrics_2 = 1
-prt_o_fabrics_3 = 1
-prt_o_fabrics_4 = 1
+prt_o_fabrics_1 = 2
+prt_o_fabrics_2 = 2
+prt_o_fabrics_3 = 2
+prt_o_fabrics_4 = 2
 prt_o_retardant_1 = 1
 prt_o_retardant_2 = 1
 prt_o_retardant_3 = 1
 prt_o_retardant_4 = 1
-prt_o_retardant_5 = 1
+prt_o_retardant_5 = 2
 prt_o_retardant_6 = 1
 prt_o_retardant_7 = 1
 prt_o_retardant_8 = 1
@@ -246,25 +251,25 @@ prt_o_retardant_19 = 1
 prt_o_retardant_20 = 1
 
 [loot_table_armor_parts_tier2]
+prt_o_ballistic_19 = 3
+prt_o_ballistic_5 = 2
+prt_o_ballistic_9 = 2
+prt_o_ballistic_13 = 2
+prt_o_ballistic_15 = 2
+prt_o_ballistic_16 = 2
+prt_o_ballistic_18 = 2
 prt_o_ballistic_1 = 1
 prt_o_ballistic_2 = 1
 prt_o_ballistic_3 = 1
 prt_o_ballistic_4 = 1
-prt_o_ballistic_5 = 1
 prt_o_ballistic_6 = 1
 prt_o_ballistic_7 = 1
 prt_o_ballistic_8 = 1
-prt_o_ballistic_9 = 1
 prt_o_ballistic_10 = 1
 prt_o_ballistic_11 = 1
 prt_o_ballistic_12 = 1
-prt_o_ballistic_13 = 1
 prt_o_ballistic_14 = 1
-prt_o_ballistic_15 = 1
-prt_o_ballistic_16 = 1
 prt_o_ballistic_17 = 1
-prt_o_ballistic_18 = 1
-prt_o_ballistic_19 = 1
 prt_o_ballistic_20 = 1
 
 [loot_table_armor_parts]
@@ -274,7 +279,8 @@ loot_table_armor_parts_tier2 = 1
 ; MARK: Weapon Parts
 
 ; These parts are split into tiers based on current trader price.
-; Quick and dirty, more organization is probably necessary.
+; and lightly weighted based on their original gamma weights in the
+; misc category. Quick and dirty, more organization is probably necessary.
 
 [loot_table_weapon_parts_tier1]
 prt_w_barrel_1 = 1
@@ -358,9 +364,9 @@ prt_w_trigger_components_3 = 1
 prt_w_trigger_components_5 = 1
 
 [loot_table_weapon_parts]
-loot_table_weapon_parts_tier1 = 3
-loot_table_weapon_parts_tier2 = 2
-loot_table_weapon_parts_tier3 = 1
+loot_table_weapon_parts_tier1 = 8
+loot_table_weapon_parts_tier2 = 5
+loot_table_weapon_parts_tier3 = 2
 
 ; MARK: Ammo Parts
 
@@ -418,7 +424,7 @@ loot_table_ammo_uni_lvl2 = 1
 
 [loot_table_ammo_wp_lvl1]
 ammo_7.62x39_fmj = 3
-7.62x54_7h1 = 1
+ammo_7.62x54_7h1 = 1
 
 [loot_table_ammo_wp_lvl2]
 ammo_23x75_shrapnel = 3
@@ -432,9 +438,9 @@ ammo_9x21_sp10 = 3
 ammo_5.45x39_ep = 1
 
 [loot_table_ammo_wp_lvl4]
-ammo_pkm_100 = 1 ; not in original gamma table, may need adjustment
 ammo_5.45x39_ap = 2
-7.62x54_7h14 = 1
+ammo_pkm_100 = 1 ; not in original gamma table, may need adjustment
+ammo_7.62x54_7h14 = 1
 
 [loot_table_ammo_wp_lvl5]
 ammo_12.7x55_ap = 1 ; not in original gamma table, may need adjustment
@@ -485,8 +491,6 @@ loot_table_ammo_nato = 2
 [loot_table_comestibles]
 loot_table_food = 10
 loot_table_alcohol = 5
-loot_table_special_drinks = 1
-loot_table_water = 1
 
 [loot_table_generic]
 ; these values now differ significantly from the default gamma "misc" loot
@@ -494,14 +498,14 @@ loot_table_water = 1
 ; large lists of items that dominated the original weights
 loot_table_junk = 50
 loot_table_repair = 35
-loot_table_ammo_parts = 15
-loot_table_weapon_parts = 15
-loot_table_armor_parts = 15
-loot_table_medical = 10
-loot_table_alcohol = 5
-loot_table_tobacco = 5
-loot_table_valuables = 3
-loot_table_food = 2 ; -- already lots of pre-existing food spawns
+loot_table_weapon_parts = 12
+loot_table_armor_parts = 12
+loot_table_ammo_parts = 10
+loot_table_comestibles = 6
+loot_table_tobacco = 4
+loot_table_medical = 3
+loot_table_valuables = 2
+loot_table_water = 1
 
 [loot_table_ammo]
 loot_table_ammo_parts = 3
