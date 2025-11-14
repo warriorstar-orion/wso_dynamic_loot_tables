@@ -22,7 +22,6 @@ local ini_dyn
 
 local enable_debug = false -- enable logging for debugging
 local debug_spawn_all = false -- spawn something in every possible destination at game-start
-local inited = false
 local sfind = string.find
 
 -- Table that holds the current configuration, loot tables, destinations, and
@@ -99,14 +98,20 @@ function remove_marker(id, typ)
 end
 
 function init_settings()
-	print_debug("game_setup.init_settings: inited={%s}", inited)
-	if inited then
-		return
-	end
-	inited = true
+	print_debug("game_setup.init_settings")
 
-	dynamic_loot.load_destinations(dyn_loot, "items\\settings\\dynamic_loot_dests.ltx")
-	dynamic_loot.load_tables(dyn_loot, "items\\settings\\dynamic_loot_tables.ltx")
+	if size_table(dyn_loot.itm_info) == 0 then
+		dynamic_loot.load_destinations(dyn_loot, "items\\settings\\dynamic_loot_dests.ltx")
+	end
+
+	if size_table(dyn_loot.tables) == 0 then
+		dynamic_loot.load_tables(dyn_loot, "items\\settings\\dynamic_loot_tables.ltx")
+
+		if magazine_binder then -- mags redux
+			dynamic_loot.load_tables(dyn_loot, "items\\settings\\dynamic_loot_tables_mags_redux.ltx")
+		end
+	end
+
 	ini_dyn = dynamic_loot.load_zcp_settings(dyn_loot, "items\\settings\\dynamic_item_spawn.ltx")
 end
 
@@ -320,11 +325,17 @@ local function actor_on_update()
 			break
 		end
 	end
-
 	tg_stkr = time_global() + 10000
 end
 
+-- local debug_spheres_loaded_for_level = "______"
 local function actor_on_item_take(obj)
+	-- local level_name = level.name()
+	-- if debug_spheres_loaded_for_level ~= level_name then
+	-- 	debug_spheres_loaded_for_level = level_name
+	-- 	set_particles(level_name, dyn_loot.itm_info)
+	-- end
+
 	local id = obj:id()
 
 	if dyn_loot == nil then
@@ -408,29 +419,57 @@ local function actor_on_item_take(obj)
 end
 
 local function save_state(m_data)
-	if dyn_loot ~= nil then
-		m_data.dyn_loot = {
-			itm_on = dyn_loot.itm_on,
-			itm_num = dyn_loot.itm_num,
-		}
-		print_debug(
-			"# SAVING: dyn_loot.itm_on [%s] - dyn_loot.itm_num [%s]",
-			size_table(m_data.dyn_loot.itm_on),
-			size_table(m_data.dyn_loot.itm_num)
-		)
+	if not m_data.dyn_loot then
+		m_data.dyn_loot = {}
 	end
+	m_data.dyn_loot.itm_on = dyn_loot.itm_on
+	m_data.dyn_loot.itm_num = dyn_loot.itm_num
+
+	print_debug(
+		"game_setup.save_state: #itm_on={%s} #itm_num={%s} #itm_info={%s} #tables={%s}",
+		size_table(dyn_loot.itm_on),
+		size_table(dyn_loot.itm_num),
+		size_table(dyn_loot.itm_info),
+		size_table(dyn_loot.tables)
+	)
 end
 
 local function load_state(m_data)
+	init_settings()
+
 	if m_data.dyn_loot ~= nil then
 		dyn_loot.itm_on = m_data.dyn_loot.itm_on
 		dyn_loot.itm_num = m_data.dyn_loot.itm_num
 
 		print_debug(
-			"# LOADING: dyn_loot.itm_on [%s] - dyn_loot.itm_num [%s]",
+			"game_setup.load_state: #itm_on={%s} #itm_num={%s} #itm_info={%s} #tables={%s}",
 			size_table(dyn_loot.itm_on),
-			size_table(dyn_loot.itm_num)
+			size_table(dyn_loot.itm_num),
+			size_table(dyn_loot.itm_info),
+			size_table(dyn_loot.tables)
 		)
+	end
+end
+
+last_gizmo_id = 707070
+color_not_colliding = fcolor():set(0, 1, 0, 1)
+
+function set_particles(level_name, itm_info)
+	print_debug("game_setup.set_particles #itm_info={%s} level_name={%s}", size_table(itm_info), level_name)
+	for name, info in pairs(itm_info) do
+		if info.lvl == level_name then
+			print_debug("game_setup.set_particles level_name={%s} name={%s}", level_name, name)
+			last_gizmo_id = last_gizmo_id + 1
+			local sphere = debug_render.add_object(last_gizmo_id, DBG_ScriptObject.sphere):cast_dbg_sphere()
+			sphere.visible = true
+			sphere.color = fcolor():set(math.random(), math.random(), math.random(), 1)
+			local pos = vector():set(info.x, info.y, info.z)
+			local scale = math.random(10, 30) / 1000
+			local scale_mat = matrix():identity():scale(scale, scale, scale)
+			local pos_mat = matrix():translate(pos)
+			local mat = matrix():mul(pos_mat, scale_mat)
+			sphere.matrix = mat
+		end
 	end
 end
 

@@ -53,6 +53,7 @@ function load_destinations(dyn_loot, ini_filename)
 						x = tonumber(t[2]),
 						y = tonumber(t[3]),
 						z = tonumber(t[4]),
+						lvl = section,
 						lvl_id = tonumber(t[5]),
 						gm_id = tonumber(t[6]),
 					}
